@@ -1,0 +1,132 @@
+# Even though in UNIX less code is needed to execute certain processes/ actions, for longer files & programs Python is a more efficient solution that executes commands much faster, thanks to the libraries. 
+
+
+# To access a file "foo.txt" we can use: 
+  # Absolute path: 
+/users/altintas.foo.txt 
+
+ 
+
+  # Relative path: 
+foo.txt 
+
+# NOTE: This works only if we are in the working directory: "altintas" 
+./foo.txt 
+
+ 
+
+  #Dot dot directory (if we are in subfolder of "altintas": 
+../foo.txt              # The ../refers to the parent directory for that directory 
+
+~ (tilde) in path names: 
+~/foo.txt 
+~/altintas/foo.txt 
+
+ 
+
+ 
+
+# Few terms to explain: 
+
+#Standard input (stdin): Usually from the keyboard, for user to enter inputs 
+
+# Standard output (stdout): It is where output is sent to or printed – usually the terminal 
+
+# Standard error(stderr):  Output channel for error messages or any other non-functional outputs or trace print statements. Usually to the terminal 
+
+# Filter: A program that takes input and transforms it 
+
+ 
+
+#UNIX Commands 
+
+#Command         Action 
+
+ls              # Stands for lists  and it lists files and folders in any UNIX directory 
+
+cd              # Change directory 
+
+clear           # Clears UNIX terminal  
+
+pwd             # Prints working directory 
+
+cat             # Show contents of files 
+
+man ls          # Shows manual pages to look up the documentation of any commands 
+
+ls -l           # Displays long form of the file info (access rights, creation date and size) 
+
+ls -a           # Shows hidden files and folders 
+
+ls ~            # Shows files/folders in my home directory 
+
+ls..            # Lists files/ folders in parent directory 
+
+ls *.txt        # Lists all files with .txt extension 
+
+mkdir           # Make a new folder/directory 
+
+cp              # Copy information or a file 
+
+grep            # Searches for a pattern in input stream for lines with a given string 
+
+more            # Will show as much as fits in your shell window 
+
+sort            # Sorts lines alphabetically/ numerically 
+
+head            # Lists the first n lines of a file or input stream 
+
+tail            # Lists last n lines 
+
+cut             # Allows to cut a portion of each line of a file 
+
+sed             # Stream editor, performs basic text transformations on input stream 
+
+find            # Allows to do quick searches 
+
+ 
+
+ 
+
+ 
+
+# Practice Examples: 
+
+cd NameOfDirectory                                               # Change working directory to NameOfDirectory 
+mkdir My1stDir                                                   # If there isn't a directory you want, you can create one 
+ls –la                                                           # Show all files/ folders and hidden ones 
+cat ../fruits.txt                                                # See contents of fruits.txt 
+cp ../fruits.txt.                                                # Copy fruits.txt and paste it into the working directory  (represented by ".")            
+mv ../fruits.txt                                                 # You can move fruits.txt to a different location      
+ls *.txt                                                         # List all files with .txt extension 
+more shakespear.txt                                              # Fills the terminal with text from file, not no more 
+sort fruits.txt                                                  # Sorts each line in alphabetical order 
+sort fruits.txt > sorted-fruits.txt                              # Sorts file fruits.txt and saves it into a newly-created file 
+uniq fruits_sorted.txt                                           # Gets unique lines, duplicates are excluded 
+wc –l fruits-unique.txt                                          # Counts number of lines in that file 
+who > names.txt                                                  # Who is logged into UNIIX system and saves to a file 
+pwd; ls –l                                                       # Prints working directory and then lists long form of all files 
+(pwd; ls –l) > out.txt                                           # Saves the output of the two commands into out.txt file 
+(pwd; ls –l) > /dev/null/                                        # Ignored, not seen as standard output 
+cat foo.txt | wc                                                 # Pipes out the output of cat command to count number of lines, words and characters 
+ls –l | grep txt | wc                                            # Lists all files, then selects a files with .txt and counts number of those files 
+who | sort > current_users                                       # Who is logged on, sort is alphabetically and save to current_users file 
+uniq fruits-sorted.txt | wc –l                                   # Filters out duplicated in the file and counts number of lines 
+man cat | grep file | wc – l                                     # Finds manual page for "cat" then searches for lines with the word "file" & counts # of lines 
+ps –aef                                                          # ps, reports process status, -aef, gets all processes associated with the terminals running in                                                                                               the system 
+sed –e 's/ /\'$'\n/g' < shakespeare.txt                          # transform text, by replacing empty spaces with a new line, g – global replacement 
+| sort | sed'/^$/d'|                                             # Sort alphabetically and remove the remaining blank lines 
+uniq –c |                                                        # Find unique words and count the number 
+sort –nr|                                                        # Does numerical sort 
+> count_vs_words                                                 # Write output into a file 
+(head –2; tail –2) < fruits.txt                                  # Top and bottom 2 mines of the file 
+paste fruits* > all-fruits.txt                                   #  Creates a new file with 3 columns of fruits from the 3 files in directory 
+ps –aef                                                          # Lists all processes in UNIX (UID – unique user identifier) 
+dscl . List /Users UniqueID                                      # Lists all in the users directory with a unique identifier 
+ps – aef | cut –c3-5 | more                                      # Displays only the user identifiers 
+ps –aef | cut –c3-5 | sort | uniq –c | sort –nr | head –3        # Counts processes for each unique ID, sorts according to most processes, show top 3 
+ps –aef | cut –c3-5 | sort |grep 501 | wc – l                    # searches for ID = 501 and counts occurrences 
+
+ 
+
+ 
