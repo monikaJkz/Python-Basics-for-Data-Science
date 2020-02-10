@@ -1,0 +1,78 @@
+#Lists can contain floats, stings integers and Boolean and any combination of them. 
+
+ 
+
+#Iterating over a list  
+
+list1 = [11,22,33] 
+for i in list1: 
+    print(i) 
+  
+
+# The above is the same but more readable version of the following: 
+
+list1 = [11,22,33] 
+for i in range(0, len(list1)): 
+    print(list1[i]) 
+
+ 
+
+Amend a list 
+
+list1[1] = 95                    # [11, 95, 33] 
+list1.append(44)            # [11, 95, 33, 44] 
+list1.pop(2)                     # [11, 95, 44]
+list1.remove(44)            # [11, 95] 
+list1.insert(1, "Kelly")   # [11, "Kelly", 95] 
+list1.clear()                     # removes all elements from the list 
+
+  
+
+Add two lists together: 
+ 
+
+#Simple append 
+
+list1 = [1,2,3] 
+list2 = [4,5,6] 
+list1.extend(list2)          # [1,2,3,4,5,6] 
+
+  
+#Zip 
+
+list1 = [1,2,3]                      
+list2 = [4,5,6]                     
+for x, y in zip(list1, list2):      
+    print(x, ", ", y)                         # This loop will print: 1,4    2,5     3, 6 
+
+  
+
+#Replace entries within lists 
+
+#The first example does NOT work: 
+
+x = [10,20,30] 
+y = list(x) 
+x[1] = 42 
+print(y)            # returns y = [10,20,30] as y simply copies the list of x at that point 
+  
+
+#This is how to do it: 
+
+x = [10,20,30] 
+y = x 
+x[1] = 42 
+print(y)            # returns y = [10, 42, 30] as y is assigned to the same list as x 
+
+  
+
+Comprehension 
+
+list3 = [i**2 for i in range(1,11)]         # [1, 4, 9, 16, 25, 36, 49, 64, 81, 100] 
+list4 = [i for i in range(0,6)]                  # [0, 1, 2, 3, 4, 5] 
+list5 = [i for i in range(0,20,2)]            # [0, 2, 4, 6, 8, 10, 12, 14, 16, 18] 
+list6 = [i % 2 for i in range(0,10)]        # [0, 1, 0, 1, 0, 1, 0, 1, 0, 1] 
+
+
+import random 
+list7 = [random.randint(0,5) for i in range (0,10)]     # [0, 2, 2, 0, 3, 3, 5, 0, 4, 1] 
