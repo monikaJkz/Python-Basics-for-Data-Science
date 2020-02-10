@@ -1,0 +1,74 @@
+# Sets are useful because they support a useful range of math operations and they only allow unique elements.  
+# They are also unordered and hence very fast.  
+# Just like with lists and tuples, you can input different Python types. 
+
+  
+
+# Create a set :
+
+fav_colours = set(['blue', 'green', 'red'])       # {'green', 'blue', 'red'} 
+
+set1 = {"pop", "rock", "disco"} 
+
+ 
+
+# You can convert a list into a set: 
+
+list1 = ["Michael Jackson", "Thriller", "Thriller"] 
+set2 = set(list1) 
+
+ 
+
+ 
+
+# Modify elements :
+
+fav_colours.add('yellow')                                # {'red', 'blue', 'yellow', 'green'} 
+fav_colours.remove("blue") 
+fav_colours.discard('blue')                              # {'green', 'red', 'yellow'}, but if such element was not part of                                                                                   the set then it will do nothing 
+
+ 
+
+# Check contents of the set :
+
+set1 = {"pop", "rock", "disco"} 
+"rock" in set1                                                      # This will return True 
+
+ 
+
+# Compare separate sets :
+
+fav_colours = set(['blue', 'green', 'red']) 
+other_colours = set(['blue', 'yellow']) 
+either = other_colours.union(fav_colours)           # {'blue', 'red', 'green', 'yellow'}  - all elements put                                                                                                     together and duplicates removed 
+
+ 
+
+# Find unique elements across the two sets :
+
+either2 = fav_colours | other_colours                  # {'red', 'blue', 'green', 'yellow'} 
+
+  
+
+
+# Find elements in both sets :
+
+both = other_colours.intersection(fav_colours)      # {'yellow'} 
+
+OR 
+
+both2 = fav_colours & other_colours                        # {'yellow'} 
+print(both2) 
+
+ 
+
+# Find difference between sets: 
+
+set1.difference(set2)                                                    # Finds all items in set1 that are not shared with set2 
+
+ 
+
+# Find if superset or subset :
+
+set1.issuperset(set2)                                                    # Checks if set1 is a superset of set2  
+set1.issubset(set2)                                                        # Checks if set1 is a subset of set2 
