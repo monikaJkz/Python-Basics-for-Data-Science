@@ -1,0 +1,298 @@
+Satellite Image Data
+Analysis using numpy
+Data Source: Satellite Image from WIFIRE Project
+WIFIRE is an integrated system for wildfire analysis, with specific regard to changing urban dynamics and climate. The system integrates networked observations such as heterogeneous satellite data and real-time remote sensor data, with computational techniques in signal processing, visualization, modeling, and data assimilation to provide a scalable method to monitor such phenomena as weather patterns that can help predict a wildfire's rate of spread. You can read more about WIFIRE at: https://wifire.ucsd.edu/
+In this example, we will analyze a sample satellite image dataset from WIFIRE using the numpy Library.
+
+Loading the libraries we need: numpy, scipy, matplotlib
+
+%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+import imageio
+Creating a numpy array from an image file:
+
+
+Lets choose a WIFIRE satellite image file as an ndarray and display its type.
+photo_data = imageio.imread('./wifire/sd-3layers.jpg')
+
+# Note: In the video, this is mentioned as an ndarray. Don't worry about the type for now, it should still work as usual.
+type(photo_data)
+imageio.core.util.Array
+Let's see what is in this image.
+
+plt.figure(figsize=(15,15))
+plt.imshow(photo_data)
+OUT: <matplotlib.image.AxesImage at 0x1b428ed9208>
+
+photo_data.shape # provides us with height, width and colours (RGB = 3)
+print(photo_data)
+OUT: (3725, 4797, 3)
+
+The shape of the ndarray show that it is a three layered matrix. The first two numbers here are length and width, and the third number (i.e. 3) is for three layers: Red, Green and Blue.
+
+
+
+
+
+
+
+
+RGB Color Mapping in the Photo:
+
+
+RED pixel indicates Altitude
+BLUE pixel indicates Aspect
+GREEN pixel indicates Slope
+
+The higher values denote higher altitude, aspect and slope.
+
+
+photo_data.size
+OUT: 53606475
+
+
+photo_data.min(), photo_data.max() 
+# This is used to veriy the max and min of data values, and ensure that they are within 0 and 255 range
+OUT: (0, 255)
+
+
+photo_data.mean()                    # Average pixel value
+OUT: 75.8299354508947
+
+
+
+
+
+
+Pixel on the 150th Row and 250th Column
+
+photo_data[150, 250]                 # Checking the RGB values for a pixel at [row = 150, col = 250]
+# This outputs: 17 for r, 35 for g and 255 for b
+OUT: Array([ 17,  35, 255], dtype=uint8)
+
+
+photo_data[150, 250, 1]              # Can check specifically the green value only at this pixel
+OUT: 35
+
+
+
+
+
+
+Set a Pixel to All Zeros
+
+
+We can set all three layer in a pixel as once by assigning zero globally to that (row,column) pairing. 
+However, setting one pixel to zero is not noticeable.
+#photo_data = misc.imread('./wifire/sd-3layers.jpg')
+photo_data[150, 250] = 0             # All colours in this pixel are set to 0 resuling in a completely black pixel
+plt.figure(figsize=(10,10))
+plt.imshow(photo_data)
+OUT: <matplotlib.image.AxesImage at 0x1b42c9cbec8>
+
+
+
+
+
+Changing Colors in a Range
+
+
+We can also use a range to change the pixel values. As an example, let's set the green layer for rows 200 t0 800 to full intensity.
+photo_data = imageio.imread('./wifire/sd-3layers.jpg')
+photo_data[200:800, : ,1] = 255        # Ranges rows 200 to 800, across all columns (:), increasing intensity in green
+plt.figure(figsize=(10,10))
+plt.imshow(photo_data)
+OUT: <matplotlib.image.AxesImage at 0x1b42c9fd7c8>
+
+
+
+photo_data = imageio.imread('./wifire/sd-3layers.jpg')
+photo_data[200:800, :] = 255           # Increases intensity of all colours, creating a white band
+plt.figure(figsize=(10,10))
+plt.imshow(photo_data)
+OUT: <matplotlib.image.AxesImage at 0x1b42ca65988>
+
+
+
+photo_data = imageio.imread('./wifire/sd-3layers.jpg')
+photo_data[200:800, :] = 0              # Creates a black band
+plt.figure(figsize=(10,10))
+plt.imshow(photo_data)
+OUT: <matplotlib.image.AxesImage at 0x1b42cd7acc8>
+
+
+
+
+
+
+
+Pick all Pixels with Low Values
+
+photo_data = imageio.imread('./wifire/sd-3layers.jpg')
+print("Shape of photo_data:", photo_data.shape)
+low_value_filter = photo_data < 150
+print("Shape of low_value_filter:", low_value_filter.shape)
+OUT: Shape of photo_data: (3725, 4797, 3)
+OUT: Shape of low_value_filter: (3725, 4797, 3)
+
+
+
+
+
+
+
+Filtering Out Low Values
+
+
+Whenever the low_value_filter is True, set value to 0.
+plt.figure(figsize=(10,10))
+plt.imshow(photo_data)
+photo_data[low_value_filter] = 0
+plt.figure(figsize=(10,10))
+plt.imshow(photo_data)
+OUT: <matplotlib.image.AxesImage at 0x1b42d112f88>
+
+
+
+
+
+
+More Row and Column Operations
+
+
+You can design complex patters by making cols a function of rows or vice-versa. Here we try a linear relationship between rows and columns.
+rows_range = np.arange(len(photo_data))
+cols_range = rows_range
+print(type(rows_range))
+OUT: <class 'numpy.ndarray'>
+
+photo_data[rows_range, cols_range] = 255
+plt.figure(figsize=(15,15))
+plt.imshow(photo_data)
+OUT: <matplotlib.image.AxesImage at 0x1b42cbb8ac8>
+
+
+
+
+
+
+Masking Images
+
+
+Now let us try something even cooler...a mask that is in shape of a circular disc.
+total_rows, total_cols, total_layers = photo_data.shape
+X, Y = np.ogrid[:total_rows, :total_cols] 
+# Orgrid function will help us vectorise the distance from the centre, which will be a function of the two variables.
+# Ogrid is a compact method of creating multidimensional ndarray operations
+print("X = ", X.shape, " and Y = ", Y.shape)
+OUT: X =  (3725, 1)  and Y =  (1, 4797)
+
+
+center_row, center_col = total_rows / 2, total_cols / 2
+dist_from_center = (X - center_row) + (Y - center_col)**2
+# The center-radius form of the circle equation is in the format (x – h)2 + (y – k)2 = r2, 
+# with the center being at the point (h, k) and the radius being "r".
+radius = (total_rows / 2)**2
+circular_mask = (dist_from_center > radius)
+print("Shape of circular_mask:", circular_mask.shape)
+cent_row, cent_col = 1000, 3000
+dist_from_cent = (X-cent_row)
+OUT: Shape of circular_mask: (3725, 4797)
+
+
+photo_data = imageio.imread('./wifire/sd-3layers.jpg')
+photo_data[circular_mask] = 0
+plt.figure(figsize=(15,15))
+plt.imshow(photo_data)
+OUT: <matplotlib.image.AxesImage at 0x1b42d9a03c8>
+
+
+
+
+
+
+
+Further Masking
+
+
+You can further improve the mask. For example, just get the upper half of the disc.
+
+X, Y = np.ogrid[:total_rows, :total_cols]
+half_upper = X < center_row # this line generates a mask for all rows above the center
+half_upper_mask = np.logical_and(half_upper, circular_mask)
+photo_data = imageio.imread('./wifire/sd-3layers.jpg')
+photo_data[half_upper_mask] = 255
+plt.figure(figsize=(15,15))
+plt.imshow(photo_data)
+OUT: <matplotlib.image.AxesImage at 0x2111aa237c8>
+
+
+
+
+
+
+
+Further Processing of our Satellite Imagery
+
+Processing of RED Pixels
+Remember that red pixels tell us about the height. Let us try to highlight all the high altitude areas. We will do this by detecting high intensity RED Pixels and muting down other areas.
+
+photo_data = imageio.imread('./wifire/sd-3layers.jpg')
+red_mask   = photo_data[:, : ,0] < 150
+# Generates mask, which is true for vaues below 150, this is done for all rows and cols and red colour only
+photo_data[red_mask] = 0 # Assing all low intensity (<150) red pixels to 0 instead
+plt.figure(figsize=(15,15))
+plt.imshow(photo_data)
+OUT: <matplotlib.image.AxesImage at 0x2110d502988>
+
+
+
+
+
+
+
+Detecting Highly-GREEN Pixels
+
+photo_data = imageio.imread('./wifire/sd-3layers.jpg')
+green_mask = photo_data[:, : ,1] < 150
+photo_data[green_mask] = 0
+plt.figure(figsize=(15,15))
+plt.imshow(photo_data)
+OUT: <matplotlib.image.AxesImage at 0x2110d563ec8>
+
+
+
+
+
+
+Detecting Highly-BLUE Pixels
+
+photo_data = imageio.imread('./wifire/sd-3layers.jpg')
+blue_mask  = photo_data[:, : ,2] < 150
+photo_data[blue_mask] = 0
+plt.figure(figsize=(15,15))
+plt.imshow(photo_data)
+OUT: <matplotlib.image.AxesImage at 0x2111a8e1e88>
+
+
+
+
+
+
+Composite mask that takes thresholds on all three layers: RED, GREEN, BLUE
+
+photo_data = imageio.imread('./wifire/sd-3layers.jpg')
+
+red_mask   = photo_data[:, : ,0] < 150
+green_mask = photo_data[:, : ,1] > 100
+blue_mask  = photo_data[:, : ,2] < 100
+
+final_mask = np.logical_and(red_mask, green_mask, blue_mask)
+photo_data[final_mask] = 0
+plt.figure(figsize=(15,15))
+plt.imshow(photo_data)
+OUT: <matplotlib.image.AxesImage at 0x2111a9be848>
+
+
+
