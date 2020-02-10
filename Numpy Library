@@ -1,0 +1,893 @@
+
+Introduction to numpy:
+
+
+Package for scientific computing with Python 
+Numerical Python, or "Numpy" for short, is a foundational package on which many of the most common data science packages are built. Numpy provides us with high performance multi-dimensional arrays which we can use as vectors or matrices.
+
+
+
+The key features of numpy are:
+
+ndarrays: n-dimensional arrays of the same data type which are fast and space-efficient. There are a number of built-in methods for ndarrays which allow for rapid processing of data without using loops (e.g., compute the mean).
+Broadcasting: a useful tool which defines implicit behavior between multi-dimensional arrays of different sizes.
+Vectorization: enables numeric operations on ndarrays.
+Input/Output: simplifies reading and writing of data from/to file.
+Additional Recommended Resources:
+Numpy Documentation
+Python for Data Analysis by Wes McKinney
+Python Data science Handbook by Jake VanderPlas
+
+
+
+
+Getting started with ndarray
+
+ndarrays are time and space-efficient multidimensional arrays at the core of numpy. Like the data structures in Week 2, let's get started by creating ndarrays using the numpy package.
+
+
+How to create Rank 1 numpy arrays:
+
+import numpy as np
+
+an_array = np.array([3, 33, 333])  # Create a rank 1 array
+print(type(an_array))              # The type of an ndarray is: "<class 'numpy.ndarray'>"
+OUT: <class 'numpy.ndarray'>
+
+# test the shape of the array we just created, it should have just one dimension (Rank 1)
+print(an_array.shape)
+
+# test the shape of the array we just created, it should have just one dimension (Rank 1)
+print(an_array.shape)
+OUT: (3,)
+
+# because this is a 1-rank array, we need only one index to accesss each element
+print(an_array[0], an_array[1], an_array[2])
+
+# because this is a 1-rank array, we need only one index to accesss each element
+print(an_array[0], an_array[1], an_array[2]) 
+OUT: 3 33 333
+
+an_array[0] =888            # ndarrays are mutable, here we change an element of the array
+print(an_array)
+OUT: [888  33 333]
+
+
+
+How to create a Rank 2 numpy array:
+
+A rank 2 ndarray is one with two dimensions. Notice the format below of [ [row] , [row] ]. 2 dimensional arrays are great for representing matrices which are often useful in data science.
+
+another = np.array([[11,12,13],[21,22,23]])   # Create a rank 2 array
+# 1st row of the matix consists of [11,12,13] and the second row will be: [21,22,23]
+print(another)  # print the array
+
+print("The shape is 2 rows, 3 columns: ", another.shape)  # rows x columns                   
+
+print("Accessing elements [0,0], [0,1], and [1,0] of the ndarray: ", another[0, 0], ", ",another[0, 1],", ", another[1, 0])
+OUT: [[11 12 13] [21 22 23]]
+
+
+# The shape is 2 rows, 3 columns:  (2, 3)
+# Accessing elements [0,0], [0,1], and [1,0] of the ndarray:  11 ,  12 ,  21
+
+# There are many ways to create numpy arrays:
+# Here we create a number of different size arrays with different shapes and different pre-filled values. numpy has a number of built in methods which help us quickly and easily create multidimensional arrays.
+
+
+import numpy as np
+# create a 2x2 array of zeros
+ex1 = np.zeros((2,2))      
+print(ex1)                              
+import numpy as np
+
+
+# create a 2x2 array of zeros
+ex1 = np.zeros((2,2))      
+print(ex1)                              
+OUT: [[0. 0.] [0. 0.]]
+
+
+# create a 2x2 array filled with 9.0
+ex2 = np.full((2,2), 9.0)  
+print(ex2)
+# create a 2x2 array filled with 9.0
+ex2 = np.full((2,2), 9.0)  
+print(ex2)   
+OUT: [[9. 9.]
+ [9. 9.]]
+
+
+# create a 2x2 matrix with the diagonal 1s and the others 0
+ex3 = np.eye(3,3)
+print(ex3) 
+
+
+# create a 2x2 matrix with the diagonal 1s and the others 0
+ex3 = np.eye(3,3)
+print(ex3)  
+OUT: [[1. 0. 0.] [0. 1. 0.] [0. 0. 1.]]
+
+
+# create an array of ones
+ex4 = np.ones((1,2))
+print(ex4)    
+OUT: [[1. 1.]]      #notice that the above ndarray (ex4) is actually rank 2, it is a 2x1 array
+print(ex4.shape)
+
+# which means we need to use two indexes to access an element
+print()
+print(ex4[0,1])     # notice that the above ndarray (ex4) is actually rank 2, it is a 2x1 array
+OUT: (1, 2)
+print(ex4.shape)
+OUT: 1.0
+
+
+# create an array of random floats between 0 and 1
+ex5 = np.random.random((2,2))
+print(ex5) 
+
+
+# create an array of random floats between 0 and 1
+ex5 = np.random.random((2,2))
+print(ex5)    
+OUT: [[0.75679225 0.11769691] [0.36626483 0.24856439]]
+
+
+
+
+
+Array Indexing
+
+Slice indexing:
+Similar to the use of slice indexing with lists and strings, we can use slice indexing to pull out sub-regions of ndarrays.
+
+
+import numpy as np
+
+# Rank 2 array of shape (3, 4)
+an_array = np.array([[11,12,13,14], [21,22,23,24], [31,32,33,34]])
+print(an_array)
+
+
+
+import numpy as np
+
+# Rank 2 array of shape (3, 4)
+an_array = np.array([[11,12,13,14], [21,22,23,24], [31,32,33,34]])
+print(an_array)
+OUT:  [[11 12 13 14] [21 22 23 24] [31 32 33 34]]
+
+
+
+Use array slicing to get a subarray consisting of the first 2 rows x 2 columns.
+
+a_slice = an_array[:2, 1:3] # a_slice refers to the specific section of an_array
+a_slice2 = np.array(an_array[:2, 1:3]) #Here the section of an_array is copied into the a_slice and any changes will be independent between the two matrices
+print(a_slice)
+OUT: [[12 13][22 23]]
+
+
+
+When you modify a slice, you actually modify the underlying array.
+
+print("Before:", an_array[0, 1])   # inspect the element at 0, 1  
+a_slice[0, 0] = 1000               # a_slice[0, 0] is the same piece of data as an_array[0, 1]
+print("After:", an_array[0, 1])    
+OUT: Before: 1000 After: 1000
+
+
+
+Use both integer indexing & slice indexing
+We can use combinations of integer indexing and slice indexing to create different shaped matrices.
+
+
+# Create a Rank 2 array of shape (3, 4)
+an_array = np.array([[11,12,13,14], [21,22,23,24], [31,32,33,34]])
+print(an_array)
+OUT: [[11 12 13 14] [21 22 23 24] [31 32 33 34]]
+
+
+
+# Using both integer indexing & slicing generates an array of lower rank
+row_rank1 = an_array[1, :]    # Rank 1 view 
+print(row_rank1, row_rank1.shape)  # notice only a single []
+OUT:  [21 22 23 24] (4,)
+
+
+
+# Slicing alone: generates an array of the same rank as the an_array
+row_rank2 = an_array[1:2, :]  # Rank 2 view 
+print(row_rank2, row_rank2.shape)   # Notice the [[ ]]
+OUT: [[21 22 23 24]] (1, 4)
+
+
+
+#We can do the same thing for columns of an array:
+print()
+col_rank1 = an_array[:, 1]
+col_rank2 = an_array[:, 1:2]
+print(col_rank1, col_rank1.shape)  # Rank 1
+print()
+print(col_rank2, col_rank2.shape)  # Rank 2
+
+OUT: [12 22 32] (3,)
+
+OUT: [[12][22][32]] (3, 1)
+
+
+
+
+Array Indexing for changing elements:
+Sometimes it's useful to use an array of indexes to access or change elements.
+
+
+# Create a new array
+an_array = np.array([[11,12,13], [21,22,23], [31,32,33], [41,42,43]])
+print('Original Array:')
+print(an_array)
+OUT:  Original Array: [[11 12 13] [21 22 23] [31 32 33] [41 42 43]]
+
+
+
+# Create an array of indices
+col_indices = np.array([0, 1, 2, 0])
+print('\nCol indices picked : ', col_indices)
+row_indices = np.arange(4)
+print('\nRows indices picked : ', row_indices)
+
+OUT: Col indices picked :  [0 1 2 0]
+     Rows indices picked :  [0 1 2 3]
+
+
+
+# Examine the pairings of row_indices and col_indices.  These are the elements we'll change next.
+for row,col in zip(row_indices,col_indices):
+    print(row, ", ",col)
+OUT: 0 ,  0
+     1 ,  1
+     2 ,  2
+     3 ,  0
+     
+     
+     
+# Select one element from each row
+print('Values in the array at those indices: ',an_array[row_indices, col_indices])
+OUT: Values in the array at those indices:  [11 22 33 41]
+
+
+
+# Change one element from each row using the indices selected
+an_array[row_indices, col_indices] += 100000
+print('\nChanged Array:')
+print(an_array)
+
+OUT: Changed Array:[[100011     12     13] [    21 100022     23] [    31     32 100033] [100041     42     43]]
+
+
+
+
+
+
+
+Boolean Indexing
+
+Array Indexing for changing elements:
+
+
+# create a 3x2 array
+an_array = np.array([[11,12], [21, 22], [31, 32]])
+print(an_array)
+OUT: [[11 12] [21 22] [31 32]]
+
+
+
+# create a filter which will be boolean values for whether each element meets this condition
+filter = (an_array > 15)
+prit(filter)
+OUT: array([[False, False], [ True,  True], [ True,  True]])
+Notice that the filter is a same size ndarray as an_array which is filled with True for each element whose corresponding element in an_array which is greater than 15 and False for those elements whose value is less than 15.
+
+
+
+# we can now select just those elements which meet that criteria
+print(an_array[filter])
+OUT: [21 22 31 32]
+
+
+# For short, we could have just used the approach below without the need for the separate filter array.
+an_array[(an_array > 20) & (an_array < 30)]
+OUT: array([21, 22])
+
+
+
+What is particularly useful is that we can actually change elements in the array applying a similar logical filter. Let's add 100 to all the even values.
+an_array[an_array % 2 == 0] +=100
+print(an_array)
+OUT: [[ 11 112] [ 21 122] [ 31 132]]
+
+
+
+
+
+
+
+Datatypes and Array Operations
+
+Datatypes:
+
+ex1 = np.array([11, 12]) # Python assigns the  data type
+print(ex1.dtype)
+OUT: int32
+
+
+
+ex2 = np.array([11.0, 12.0]) # Python assigns the  data type
+print(ex2.dtype)
+OUT: float64
+
+
+
+ex3 = np.array([11, 21], dtype=np.int64) #You can also tell Python the  data type
+print(ex3.dtype)
+print(ex3)
+OUT: int64 [11 21]
+
+
+
+# you can use this to force floats into integers (using floor function)
+ex4 = np.array([11.1,12.7], dtype=np.int64)
+print(ex4.dtype)
+print()
+print(ex4)
+OUT: int64 [11 12]
+
+
+
+# you can use this to force integers into floats if you anticipate
+# the values may change to floats later
+ex5 = np.array([11, 21], dtype=np.float64)
+print(ex5.dtype)
+print()
+print(ex5)
+OUT: float64 [11. 21.]
+
+
+
+
+Arithmetic Array Operations:
+x = np.array([[111,112],[121,122]], dtype=np.int)
+y = np.array([[211.1,212.1],[221.1,222.1]], dtype=np.float64)
+print(x)
+print()
+print(y)
+OUT: [[111 112] [121 122]]
+
+     [[211.1 212.1] [221.1 222.1]]
+     
+     
+     
+# add
+print(x + y)         # The plus sign works
+print()
+print(np.add(x, y))  # so does the numpy function "add"
+OUT: [[322.1 324.1] [342.1 344.1]]
+
+     [[322.1 324.1] [342.1 344.1]]
+
+
+
+# subtract
+print(x - y)
+print()
+print(np.subtract(x, y))
+OUT: [[-100.1 -100.1] [-100.1 -100.1]]
+
+OUT: [[-100.1 -100.1] [-100.1 -100.1]]
+
+
+
+# multiply
+print(x * y)
+print()
+print(np.multiply(x, y))
+OUT: [[23432.1 23755.2] [26753.1 27096.2]]
+
+OUT: [[23432.1 23755.2] [26753.1 27096.2]]
+
+
+
+# divide
+print(x / y)
+print()
+print(np.divide(x, y))
+# square root
+print(np.sqrt(x))
+# exponent (e ** x)
+print(np.exp(x))
+
+
+
+
+
+
+Statistical Methods, Sorting, and
+
+Set Operations:
+Basic Statistical Operations:
+
+
+# setup a random 2 x 4 matrix
+arr = 10 * np.random.randn(4,5)
+print(arr)
+#OUT: [[  3.9896779    7.16378216  -9.07322491  -2.23878012  -9.19917233]
+# [ 12.71890921   2.72370372 -17.22900555  19.97157381   1.13976362]
+# [  3.69784195 -13.52356444  -4.71099692  16.31683111  -5.3908997 ]
+# [ 23.1006329  -23.74375691 -11.72825845  -6.18979638 -17.38349664]]
+
+
+
+# compute the mean for all elements
+print(arr.mean())
+OUT: -1.4794117991446298
+
+
+
+# compute the means by row
+print(arr.mean(axis = 1))
+OUT: [-1.87154346  3.86498896 -0.7221576  -7.1889351 ]
+
+
+
+# compute the means by column
+print(arr.mean(axis = 0))
+OUT: [ 10.87676549  -6.84495887 -10.68537146   6.9649571   -7.70845126]
+
+
+
+# sum all the elements
+print(arr.sum())
+OUT: -29.5882359828926
+
+
+
+# compute the medians
+print(np.median(arr, axis = 1))
+OUT: [ -2.23878012   2.72370372  -4.71099692 -11.72825845]
+
+
+
+
+Sorting:
+# create a 10 element array of randoms
+unsorted = np.random.randn(10)
+print(unsorted)
+OUT: [-0.98834783  0.79337114 -0.95273021 -2.63057085  1.26244023  1.43184135
+       0.92863797  0.98798244  0.63539163 -0.96516494]
+
+
+
+# create copy and sort
+sorted = np.array(unsorted)
+sorted.sort()
+print(sorted)
+print()
+print(unsorted)
+OUT: [-2.63057085 -0.98834783 -0.96516494 -0.95273021  0.63539163  0.79337114
+       0.92863797  0.98798244  1.26244023  1.43184135]
+
+OUT: [-0.98834783  0.79337114 -0.95273021 -2.63057085  1.26244023  1.43184135
+       0.92863797  0.98798244  0.63539163 -0.96516494]
+
+
+
+
+# inplace sorting
+unsorted.sort() 
+print(unsorted)
+OUT: [-2.63057085 -0.98834783 -0.96516494 -0.95273021  0.63539163  0.79337114
+       0.92863797  0.98798244  1.26244023  1.43184135]
+
+
+
+
+Finding Unique elements:
+array = np.array([1,2,1,4,2,1,4,2])
+print(np.unique(array))
+OUT: [1 2 4]
+
+
+
+
+Set Operations with np.array data type:
+s1 = np.array(['desk','chair','bulb'])
+s2 = np.array(['lamp','bulb','chair'])
+print(s1, s2)
+OUT: ['desk' 'chair' 'bulb'] ['lamp' 'bulb' 'chair']
+
+
+print( np.intersect1d(s1, s2) ) 
+OUT: ['bulb' 'chair']
+
+
+print( np.union1d(s1, s2) )
+OUT: ['bulb' 'chair' 'desk' 'lamp']
+
+
+print( np.setdiff1d(s1, s2) )# elements in s1 that are not in s2
+OUT: ['desk']
+
+
+print( np.in1d(s1, s2) )#which element of s1 is also in s2
+[False  True  True]
+
+
+
+
+
+Broadcasting:
+
+Introduction to broadcasting.
+For more details, please see:
+https://docs.scipy.org/doc/numpy-1.10.1/user/basics.broadcasting.html
+
+
+import numpy as np
+
+start = np.zeros((4,3))
+print(start)
+OUT: [[0. 0. 0.] [0. 0. 0.] [0. 0. 0.] [0. 0. 0.]]
+
+
+
+# create a rank 1 ndarray with 3 values
+add_rows = np.array([1, 0, 2])
+print(add_rows)
+OUT: [1 0 2]
+
+
+
+y = start + add_rows  # add to each row of 'start' using broadcasting
+print(y)
+OUT: [[1. 0. 2.] [1. 0. 2.] [1. 0. 2.] [1. 0. 2.]]
+
+
+
+# create an ndarray which is 4 x 1 to broadcast across columns
+add_cols = np.array([[0,1,2,3]])
+add_cols = add_cols.T
+print(add_cols)
+OUT: [[0] [1] [2] [3]]
+
+
+
+# add to each column of 'start' using broadcasting
+y = start + add_cols 
+print(y)
+OUT: [[0. 0. 0.] [1. 1. 1.] [2. 2. 2.] [3. 3. 3.]]
+
+
+
+
+# this will just broadcast in both dimensions
+add_scalar = np.array([1])  
+print(start+add_scalar)
+OUT: [[1. 1. 1.] [1. 1. 1.] [1. 1. 1.] [1. 1. 1.]]
+
+
+
+
+Example from the slides:
+
+# create our 3x4 matrix
+arrA = np.array([[1,2,3,4],[5,6,7,8],[9,10,11,12]])
+print(arrA)
+OUT: [[ 1  2  3  4] [ 5  6  7  8] [ 9 10 11 12]]
+
+# create our 4x1 array
+arrB = [0,1,0,2]
+print(arrB)
+OUT: [0, 1, 0, 2]
+
+# add the two together using broadcasting
+print(arrA + arrB)
+OUT: [[ 1  3  3  6] [ 5  7  7 10] [ 9 11 11 14]]
+
+
+
+
+
+
+
+Speedtest: ndarrays vs lists
+
+
+
+First setup paramaters for the speed test. We'll be testing time to sum elements in an ndarray versus a list.
+
+from numpy import arange
+from timeit import Timer
+
+size    = 1000000
+timeits = 1000
+
+
+# create the ndarray with values 0,1,2...,size-1
+nd_array = arange(size)
+print( type(nd_array) )
+OUT: <class 'numpy.ndarray'>
+
+
+# timer expects the operation as a parameter, 
+# here we pass nd_array.sum()
+timer_numpy = Timer("nd_array.sum()", "from __main__ import nd_array")
+print("Time taken by numpy ndarray: %f seconds" % 
+      (timer_numpy.timeit(timeits)/timeits))
+OUT: Time taken by numpy ndarray: 0.000457 seconds
+
+
+# create the list with values 0,1,2...,size-1
+a_list = list(range(size))
+print (type(a_list) )
+OUT: <class 'list'>
+
+
+# timer expects the operation as a parameter, here we pass sum(a_list)
+timer_list = Timer("sum(a_list)", "from __main__ import a_list")
+print("Time taken by list:  %f seconds" % 
+      (timer_list.timeit(timeits)/timeits))
+OUT: Time taken by list:  0.028988 seconds
+
+
+
+
+
+
+
+Read or Write to Disk:
+
+Binary Format:
+
+x = np.array([ 23.23, 24.24] )
+np.save('an_array', x)
+np.load('an_array.npy')
+OUT: array([23.23, 24.24])
+
+
+
+Text Format:
+
+np.savetxt('array.txt', X=x, delimiter=',')
+!cat array.txt
+OUT: 2.323000000000000043e+01
+OUT: 2.423999999999999844e+01
+
+np.loadtxt('array.txt', delimiter=',')
+OUT: array([23.23, 24.24])
+
+
+
+
+
+
+Additional Common ndarray Operations
+Dot Product on Matrices and Inner Product on Vectors:
+
+# determine the dot product of two matrices
+x2d = np.array([[1,1],[1,1]])
+y2d = np.array([[2,2],[2,2]])
+
+print(x2d.dot(y2d))
+print()
+print(np.dot(x2d, y2d))
+
+OUT: [[4 4] [4 4]]
+OUT: [[4 4] [4 4]]
+
+
+
+
+
+# determine the inner product of two vectors
+a1d = np.array([9 , 9 ])
+b1d = np.array([10, 10])
+print(a1d.dot(b1d))
+print()
+print(np.dot(a1d, b1d))
+
+OUT: 180
+OUT: 180
+
+
+
+
+# dot produce on an array and vector
+print(x2d.dot(a1d))
+print()
+print(np.dot(x2d, a1d))
+
+OUT: [18 18]
+OUT: [18 18]
+
+
+
+
+Sum:
+# sum elements in the array
+ex1 = np.array([[11,12],[21,22]])
+print(np.sum(ex1))          # add all members
+OUT: 66
+
+print(np.sum(ex1, axis=0))  # columnwise sum
+OUT: [32 34]
+
+print(np.sum(ex1, axis=1))  # rowwise sum
+OUT: [23 43][[2 2] [2 2]]
+
+
+
+
+
+Element-wise Functions:
+For example, let's compare two arrays values to get the maximum of each.
+
+# random array
+x = np.random.randn(8)
+print(x)
+OUT: array([ 0.46583676,  1.51641313, -0.12720513,  0.20817112,  0.99765181,
+        0.02874958,  0.20470767,  0.16716357])
+
+
+
+# another random array
+y = np.random.randn(8)
+print(y)
+OUT: array([ 1.47610054, -0.86575983, -1.24390103, -0.22779355, -1.34789322,
+       -0.83076005, -0.64994444, -0.91233919])
+
+
+
+
+# returns element wise maximum between two arrays
+np.maximum(x, y)
+OUT: array([ 1.47610054,  1.51641313, -0.12720513,  0.20817112,  0.99765181,
+        0.02874958,  0.20470767,  0.16716357])
+
+
+
+
+Reshaping array:
+
+# grab values from 0 through 19 in an array
+arr = np.arange(20)
+print(arr)
+OUT: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]
+
+
+
+# reshape to be a 4 x 5 matrix
+arr.reshape(4,5)
+OUT: array([[ 0,  1,  2,  3,  4],
+       [ 5,  6,  7,  8,  9],
+       [10, 11, 12, 13, 14],
+       [15, 16, 17, 18, 19]])
+
+
+
+Transpose:
+# transpose
+ex1 = np.array([[11,12],[21,22]])
+ex1.T
+OUT: array([[11, 21],
+       [12, 22]])
+
+
+
+
+Indexing using where():
+x_1 = np.array([1,2,3,4,5])
+y_1 = np.array([11,22,33,44,55])
+filter = np.array([True, False, True, False, True])
+out = np.where(filter, x_1, y_1) # x_1 is printed when True, and y_1 is printed when False
+print(out)
+OUT: [ 1 22  3 44  5]
+
+
+
+mat = np.random.rand(5,5)
+mat
+OUT: array([[0.60613614, 0.02910741, 0.08693726, 0.46400883, 0.96786914],
+       [0.81752354, 0.57313092, 0.79594254, 0.32655419, 0.43548292],
+       [0.59863868, 0.0784031 , 0.23180709, 0.12975412, 0.34470704],
+       [0.81856535, 0.39388042, 0.83196685, 0.11682792, 0.80716985],
+       [0.47627206, 0.32311484, 0.27911696, 0.62585494, 0.57211654]])
+
+
+
+np.where( mat > 0.5, 1000, -1)
+OUT: array([[1000,   -1,   -1,   -1, 1000],
+       [1000, 1000, 1000,   -1,   -1],
+       [1000,   -1,   -1,   -1,   -1],
+       [1000,   -1, 1000,   -1, 1000],
+       [  -1,   -1,   -1, 1000, 1000]])
+
+
+
+
+
+
+"any" or "all" conditionals:
+
+arr_bools = np.array([ True, False, True, True, False ])
+arr_bools.any() # Checks if any elements in a given axis are True
+OUT: True
+
+arr_bools.all() # Checks if all elements in a given axis are True
+OUT: False
+
+
+
+
+
+Random Number Generation:
+
+Y = np.random.normal(size = (1,5))[0] # [0] makes this arran a Rank 1 array instead a default Rank 2
+print(Y)
+OUT: [ 0.07896648  1.56315051 -1.00167423  0.51281276 -0.24915204]
+
+
+
+Z = np.random.randint(low=2,high=50,size=4)
+print(Z)
+OUT: [22 37 32 46]
+
+
+
+np.random.permutation(Z) #return a new ordering of elements in Z
+OUT: array([22, 37, 32, 46])
+
+
+
+np.random.uniform(size=4) #uniform distribution
+OUT: array([0.53855283, 0.3542164 , 0.85423771, 0.41693241])
+
+
+
+np.random.normal(size=4) #normal distribution
+OUT:array([-0.41864556,  0.59142984, -0.06906808, -0.8081232 ])
+
+
+
+
+
+
+Merging data sets:
+
+K = np.random.randint(low=2,high=50,size=(2,2))
+print(K)
+print()
+M = np.random.randint(low=2,high=50,size=(2,2))
+print(M)
+
+OUT:[[12 41 [ 7 39]]
+OUT:[[41  7] [47 43]]
+
+
+
+np.vstack((K,M))
+OUT: array([[12, 41], [ 7, 39], [41,  7], [47, 43]])
+
+
+
+np.hstack((K,M))
+OUT: array([[12, 41, 41,  7], [ 7, 39, 47, 43]])
+
+
+
+np.concatenate([K, M], axis=0)
+OUT: array([[12, 41], [ 7, 39], [41,  7], [47, 43]])
+
+
+
+np.concatenate([K, M], axis = 1) 
+OUT: array([[12, 41, 41,  7], [ 7, 39, 47, 43]])
