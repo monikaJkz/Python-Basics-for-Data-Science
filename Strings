@@ -1,0 +1,87 @@
+ 
+
+#Join strings together: 
+
+word = "Hello" 
+word2 = "Hi" 
+word + word2          # HelloHi 
+
+"12"*2                       # "1212" 
+
+  
+
+#Strip extra spaces 
+
+s = "   Extras \n" 
+s.strip()                     # "Extras" 
+
+  
+
+ #Strip and remove unwanted characters 
+
+s = "****Extras****" 
+s.strip("*")               # "Extras" 
+
+  
+
+ #Split a string using characters or spaces 
+
+s = "Let's split the words" 
+s.split(" ")                 # ["Let's", "split", "the", "words"] 
+
+  
+
+#Select only specific part of the string 
+
+word = "Hello" 
+word[1:3]                 # "el" 
+word[4:7]                 # "o" 
+word[-4:-1]               # "ell" 
+
+ 
+
+#Search the string for certain words or characters 
+
+"HE" in word            # False 
+"He" in word            # True 
+word.find("el")         # 1, which is the start index location of the letter 'e' 
+word.index("o")      # returns index corresponding to position of "o" within the string 
+
+
+#Convert strings to integers or floats 
+
+numbers = "1234" 
+int(numbers)            # converts the string to integer number 1234 
+float(numbers)          # converts the string to float 1234.0 
+
+  
+
+#Format statements 
+
+statement = "We love {} {}." 
+statement.format('data', 'analysis')        # "We love data analysis." 
+
+statement = "We love {1} {0}." 
+print(statement.format('data', 'analysis'))        # "We love analysis data." 
+
+ 
+
+#Print strings with integers/floats 
+
+my_age = 29 
+print(" I am " + str(my_age) + " years old!") 
+
+ 
+
+#Format style 
+
+phrase = "Giraffe Academy" 
+Phrase.upper()                                  # GIRAFFE ACADEMY 
+Phrase.lower()                                  # giraffe academy  
+
+ 
+
+#Other manipulations     
+
+len(phrase)                                        # Gives length of the string or number of characters within 
+phrase.replace("Giraffe", "Elephant")              # Elephant Academy 
